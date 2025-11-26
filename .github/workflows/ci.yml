@@ -11,12 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5.0.1
+      - name: Checkout repository
+        uses: actions/checkout@v5.0.1
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.0
         with:
-          role-to-assume: ''
+          role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Setup terraform

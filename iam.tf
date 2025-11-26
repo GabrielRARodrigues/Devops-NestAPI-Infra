@@ -107,3 +107,37 @@ resource "aws_iam_role_policy_attachment" "app-runner-role-policy-attach" {
   role       = aws_iam_role.app-runner-role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
+
+resource "aws_iam_role" "tf-role" {
+  name = "tf-role"
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Principal" : {
+          "Federated" : "arn:aws:iam::677276108925:oidc-provider/token.actions.githubusercontent.com"
+        },
+        "Condition" : {
+          "StringEquals" : {
+            "token.actions.githubusercontent.com:aud" : [
+              "sts.amazonaws.com"
+            ]
+          },
+          "StringLike" : {
+            "token.actions.githubusercontent.com:sub" : [
+              "repo:GabrielRARodrigues/Devops-NestAPI-Infra:ref:refs/heads/main",
+              "repo:GabrielRARodrigues/Devops-NestAPI-Infra:ref:refs/heads/main"
+            ]
+          }
+        }
+      }
+    ]
+  })
+
+  tags = {
+    Iac = true
+  }
+}
