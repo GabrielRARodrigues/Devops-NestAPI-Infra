@@ -141,3 +141,26 @@ resource "aws_iam_role" "tf-role" {
     Iac = true
   }
 }
+
+resource "aws_iam_role_policy" "tf-permission-policy" {
+  name = "tf-permission-policy"
+  role = aws_iam_role.tf-role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "Statement1"
+        Action   = "ecr:*"
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Sid      = "Statement2"
+        Action   = "iam:*"
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}
