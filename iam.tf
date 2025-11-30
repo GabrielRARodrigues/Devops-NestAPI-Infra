@@ -154,7 +154,7 @@ resource "aws_iam_role_policy" "tf-permission-policy" {
         Action   = "ecr:*"
         Effect   = "Allow"
         Resource = "*"
-      },  
+      },
       {
         Sid      = "Statement2"
         Action   = "iam:*"
